@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/codepitbull/vertx-streams.svg?branch=master)](https://travis-ci.org/codepitbull/vertx-streams)
+
 Disclaimer
 ==========
 The code in here is currently in an early preview state.
