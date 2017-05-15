@@ -10,7 +10,6 @@ import io.vertx.lang.scala.streams.api.{Component, Sink, Source}
   * @param outputs number of outputs to connect
   * @tparam I type of icnoming events
   * @tparam O type of outgoing events
-  *
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
   */
 class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[StreamStage[_, I]], outputs: Int = 1) {
