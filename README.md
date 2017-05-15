@@ -37,6 +37,7 @@ input.toSource
   .map(a => a.body())
   .filter(a => a.startsWith("Hello"))
   .sink(output)
+  .run()
 ```
 This silly example consumes incoming messages from the *inout*-address, removes all events not starting with "Hello" and
  forwards the remaining ones to the eventbus-address *output*. All covered by backpressure.
