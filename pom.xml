@@ -10,6 +10,7 @@
     <version>3.4.2-SNAPSHOT</version>
   </parent>
 
+  <groupId>de.codepitbull.scala.vertx</groupId>
   <artifactId>vertx-lang-scala-streams_2.12</artifactId>
 
   <name>Vert.x Scala Language Support</name>
