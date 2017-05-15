@@ -1,0 +1,41 @@
+= Vert.x Scala Streams
+
+blaa
+
+[source,xml,subs="+attributes"]
+----
+<dependency>
+  <groupId>io.vertx</groupId>
+  <artifactId>vertx-hazelcast</artifactId>
+  <version>3.4.0-SNAPSHOT</version>
+</dependency>
+----
+
+
+== Using this cluster manager
+
+
+[source,scala]
+----
+ClusterManager mgr = new HazelcastClusterManager();
+
+VertxOptions options = new VertxOptions().setClusterManager(mgr);
+
+Vertx.clusteredVertx(options, res -> {
+  if (res.succeeded()) {
+    Vertx vertx = res.result();
+  } else {
+    // failed!
+  }
+});
+----
+
+[source]
+----
+# If the cluster.xml is in the current directory:
+java -jar ... -cp . -cluster
+vertx run MyVerticle -cp . -cluster
+
+# If the cluster.xml is in the conf directory
+java -jar ... -cp conf -cluster
+----
