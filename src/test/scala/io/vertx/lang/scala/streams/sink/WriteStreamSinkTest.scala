@@ -1,19 +1,12 @@
 package io.vertx.lang.scala.streams.sink
 
-import java.util.concurrent.{CopyOnWriteArrayList, Executors}
-
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.Stream._
+import io.vertx.lang.scala.streams.TestFunctionSink
 import io.vertx.lang.scala.streams.source.{ReadStreamSource, VertxListSource}
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith
-import org.reactivestreams.example.unicast.AsyncSubscriber
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Assertions, AsyncFlatSpec, Matchers}
-
-import scala.collection.JavaConverters._
-import scala.collection.mutable
-import scala.concurrent.Promise
 
 /**
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
@@ -25,32 +18,14 @@ class WriteStreamSinkTest extends AsyncFlatSpec with Matchers with Assertions {
     val ctx = vertx.getOrCreateContext()
     implicit val ec = VertxExecutionContext(ctx)
 
-    val prom = Promise[List[Int]]
+    val testFunctionSink = TestFunctionSink(5)
 
-    val streamed = mutable.Buffer[Int]()
+    new ReadStreamSource[Int](vertx.eventBus().consumer[Int]("testAddress").bodyStream())
+      .subscribe(testFunctionSink.sink)
 
-    val readStream = vertx.eventBus()
-      .consumer[Int]("testAddress")
-      .bodyStream()
+    new VertxListSource[Int](List(1, 2, 3, 5, 8))
+      .subscribe(new WriteStreamSink[Int](vertx.eventBus().publisher[Int]("testAddress")))
 
-    val source = new ReadStreamSource[Int](readStream)
-    val sink = new FunctionSink[Int](f => {
-      streamed += f
-      if (streamed.size == 5)
-        prom.success(streamed.toList)
-    })
-
-    source.subscribe(sink)
-
-    ec.execute(() => {
-      val source = new VertxListSource[Int](List(1, 2, 3, 5, 8))
-      val sink = vertx.eventBus().publisher[Int]("testAddress")
-
-      source.stream
-        .sink(sink)
-        .run()
-    })
-
-    prom.future.map(s => s should equal(List(1, 2, 3, 5, 8)))
+    testFunctionSink.promise.future.map(s => s should equal(List(1, 2, 3, 5, 8)))
   }
 }

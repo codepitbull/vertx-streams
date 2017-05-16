@@ -3,6 +3,7 @@ package io.vertx.lang.scala.streams.stage
 import java.util.concurrent.atomic.AtomicInteger
 
 import io.vertx.lang.scala.VertxExecutionContext
+import io.vertx.lang.scala.streams.TestFunctionSink
 import io.vertx.lang.scala.streams.sink.FunctionSink
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
@@ -22,28 +23,19 @@ class ProcessStageTest extends AsyncFlatSpec with Matchers with Assertions {
     val vertx = Vertx.vertx()
     val ctx = vertx.getOrCreateContext()
     implicit val ec = VertxExecutionContext(ctx)
+    val testFunctionSink = TestFunctionSink(5)
 
-    val counter = new AtomicInteger(0)
-    val prom = Promise[List[Int]]
+    val sideEffectAccumulator = new AtomicInteger(0)
 
-    ec.execute(() => {
-      val streamed = mutable.Buffer[Int]()
+    val source = new VertxListSource[Int](List(1, 2, 3, 5, 8))
+    val processStage = new ProcessStage((i: Int) => sideEffectAccumulator.addAndGet(i))
 
-      val source = new VertxListSource[Int](List(1, 2, 3, 5, 8))
-      val processStage = new ProcessStage((i: Int) => counter.addAndGet(i))
-      val sink = new FunctionSink[Int](f => {
-        streamed += f
-        if (streamed.size == 5)
-          prom.success(streamed.toList)
-      })
-
-      processStage.subscribe(sink)
-      source.subscribe(processStage)
-    })
+    processStage.subscribe(testFunctionSink.sink)
+    source.subscribe(processStage)
 
 
-    prom.future
+    testFunctionSink.promise.future
       .map(s => s should equal(List(1, 2, 3, 5, 8)))
-      .map(s => counter.get() should equal(19))
+      .map(s => sideEffectAccumulator.get() should equal(19))
   }
 }

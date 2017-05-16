@@ -1,9 +1,9 @@
 package io.vertx.lang.scala.streams.source
 
-import java.util.concurrent.Executors
+import java.util.concurrent.Executors.newFixedThreadPool
 
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.Stream._
+import io.vertx.lang.scala.streams.sink.WriteStreamSink
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith
 import org.reactivestreams.example.unicast.AsyncIterablePublisher
@@ -25,7 +25,8 @@ class ReactiveStreamsPublisherSourceTest extends AsyncFlatSpec with Matchers wit
     implicit val ec = VertxExecutionContext(ctx)
 
     val prom = Promise[List[Int]]
-    val received = mutable.ListBuffer[Int]()
+
+    val received = mutable.Buffer[Int]()
 
     vertx.eventBus()
       .localConsumer[Int]("sinkAddress")
@@ -35,14 +36,8 @@ class ReactiveStreamsPublisherSourceTest extends AsyncFlatSpec with Matchers wit
           prom.success(received.toList)
       })
 
-    ec.execute(() => {
-      val producer = vertx.eventBus().sender[Int]("sinkAddress")
-
-      val publisher = new AsyncIterablePublisher[Int](List(1, 2, 3, 4, 5).asJava, Executors.newFixedThreadPool(5))
-      publisher.stream
-        .sink(producer)
-        .run()
-    })
+    new ReactiveStreamsPublisherSource[Int](new AsyncIterablePublisher[Int](List(1, 2, 3, 4, 5).asJava, newFixedThreadPool(5)))
+      .subscribe(new WriteStreamSink[Int](vertx.eventBus().sender[Int]("sinkAddress")))
 
     prom.future.map(s => s should equal(List(1, 2, 3, 4, 5)))
 

@@ -3,7 +3,6 @@ package io.vertx.lang.scala.streams.sink
 import java.util.concurrent.{CopyOnWriteArrayList, Executors}
 
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.Stream._
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith
@@ -26,23 +25,20 @@ class ReactiveStreamsSubscriberSinkTest extends AsyncFlatSpec with Matchers with
 
     val prom = Promise[List[Int]]
 
+    //Will be written from a different thread in AsyncSubscriber
     val received = new CopyOnWriteArrayList[Int]()
 
-    ec.execute(() => {
-      val source = new VertxListSource[Int](List(1, 2, 3, 5, 8))
-      val rsSubscriber = new AsyncSubscriber[Int](Executors.newFixedThreadPool(5)) {
-        override def whenNext(element: Int): Boolean = {
-          received.add(element)
-          if(received.size() == 5)
-            prom.success(received.asScala.toList)
-          true
-        }
+    val rsSubscriber = new AsyncSubscriber[Int](Executors.newFixedThreadPool(5)) {
+      override def whenNext(element: Int): Boolean = {
+        received.add(element)
+        if(received.size() == 5)
+          prom.success(received.asScala.toList)
+        true
       }
+    }
 
-      source.stream
-        .sink(rsSubscriber)
-        .run()
-    })
+    new VertxListSource[Int](List(1, 2, 3, 5, 8))
+      .subscribe(new ReactiveStreamsSubscriberSink[Int](rsSubscriber))
 
     prom.future.map(s => s should equal(List(1, 2, 3, 5, 8)))
   }

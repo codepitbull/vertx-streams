@@ -3,15 +3,14 @@ package io.vertx.lang.scala.streams.stage
 import java.util.concurrent.atomic.AtomicInteger
 
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.sink.FunctionSink
+import io.vertx.lang.scala.streams.TestFunctionSink
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Assertions, AsyncFlatSpec, Matchers}
 
-import scala.collection.mutable
-import scala.concurrent.{Future, Promise}
+import scala.concurrent.Future
 
 /**
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
@@ -23,27 +22,19 @@ class ProcessAsyncStageTest extends AsyncFlatSpec with Matchers with Assertions 
     val ctx = vertx.getOrCreateContext()
     implicit val ec = VertxExecutionContext(ctx)
 
-    val counter = new AtomicInteger(0)
-    val prom = Promise[List[Int]]
+    val sideEffectCounter = new AtomicInteger(0)
 
-    ec.execute(() => {
-      val streamed = mutable.Buffer[Int]()
+    val testFunctionSink = TestFunctionSink(5)
 
-      val source = new VertxListSource[Int](List(1, 2, 3, 5, 8))
-      val processStage = new ProcessAsyncStage((i: Int) => Future(counter.addAndGet(i)))
-      val sink = new FunctionSink[Int](f => {
-        streamed += f
-        if (streamed.size == 5)
-          prom.success(streamed.toList)
-      })
+    val source = new VertxListSource[Int](List(1, 2, 3, 5, 8))
+    val processStage = new ProcessAsyncStage((i: Int) => Future(sideEffectCounter.addAndGet(i)))
 
-      processStage.subscribe(sink)
-      source.subscribe(processStage)
-    })
+    processStage.subscribe(testFunctionSink.sink)
+    source.subscribe(processStage)
 
 
-    prom.future
+    testFunctionSink.promise.future
       .map(s => s should equal(List(1, 2, 3, 5, 8)))
-      .map(s => counter.get() should equal(19))
+      .map(s => sideEffectCounter.get() should equal(19))
   }
 }
