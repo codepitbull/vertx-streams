@@ -21,7 +21,7 @@ class FilterStageTest extends AsyncFlatSpec with Matchers with Assertions {
     val original = List(1, 2, 3, 5, 8, 9)
     val expected = List(1, 3, 5, 8, 9)
 
-    val testFunctionSink = TestFunctionSink()
+    val testFunctionSink = TestFunctionSink(5)
     val source = new VertxListSource[Int](original)
     val stage = new FilterStage((i: Int) => i != 2)
 

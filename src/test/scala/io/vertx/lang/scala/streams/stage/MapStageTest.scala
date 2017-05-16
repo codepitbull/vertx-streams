@@ -2,15 +2,11 @@ package io.vertx.lang.scala.streams.stage
 
 import io.vertx.lang.scala.VertxExecutionContext
 import io.vertx.lang.scala.streams.TestFunctionSink
-import io.vertx.lang.scala.streams.sink.FunctionSink
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith
-import org.scalatest.{Assertions, AsyncFlatSpec, Matchers}
 import org.scalatest.junit.JUnitRunner
-
-import scala.collection.mutable
-import scala.concurrent.Promise
+import org.scalatest.{Assertions, AsyncFlatSpec, Matchers}
 
 /**
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a

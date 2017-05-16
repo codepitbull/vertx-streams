@@ -11,7 +11,8 @@ class TestFunctionSink(expectedListSize:Int) {
   private val streamed: mutable.Buffer[Int] = mutable.Buffer[Int]()
 
   val sink = new FunctionSink[Int](f => {
-    streamed += f
+    if (streamed.size < expectedListSize)
+      streamed += f
     if (streamed.size == expectedListSize)
       promise.success(streamed.toList)
   })

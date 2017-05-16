@@ -4,15 +4,11 @@ import java.util.concurrent.atomic.AtomicInteger
 
 import io.vertx.lang.scala.VertxExecutionContext
 import io.vertx.lang.scala.streams.TestFunctionSink
-import io.vertx.lang.scala.streams.sink.FunctionSink
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Assertions, AsyncFlatSpec, Matchers}
-
-import scala.collection.mutable
-import scala.concurrent.Promise
 
 /**
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
