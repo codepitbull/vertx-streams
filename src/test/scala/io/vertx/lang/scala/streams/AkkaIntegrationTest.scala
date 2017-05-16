@@ -44,7 +44,7 @@ class AkkaIntegrationTest extends AsyncFlatSpec with Matchers with Assertions {
     ec.execute(() => {
       val producer = vertx.eventBus().sender[Int]("sinkAddress")
 
-      implicit val system = ActorSystem("reactive-streams-test")
+      implicit val system = ActorSystem("reactive-streams-source-test")
       implicit val materializer = ActorMaterializer()
       val source: Source[Int, NotUsed] = Source(0 to 100)
         .map(a => a + 1)
@@ -67,7 +67,7 @@ class AkkaIntegrationTest extends AsyncFlatSpec with Matchers with Assertions {
     val prom = Promise[List[String]]
 
     ec.execute(() => {
-      implicit val system = ActorSystem("reactive-streams-test")
+      implicit val system = ActorSystem("reactive-streams-sink-test")
       implicit val materializer = ActorMaterializer()
 
       val received = new CopyOnWriteArrayList[String]()
