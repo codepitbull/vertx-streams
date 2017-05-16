@@ -147,4 +147,11 @@
       </plugin>
     </plugins>
   </build>
+  <distributionManagement>
+    <repository>
+      <id>bintray-codepitbull-maven</id>
+      <name>codepitbull-maven</name>
+      <url>https://api.bintray.com/maven/codepitbull/maven/vertx-scala/;publish=1</url>
+    </repository>
+  </distributionManagement>
 </project>
