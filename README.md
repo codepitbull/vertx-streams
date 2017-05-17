@@ -26,11 +26,23 @@ frameworks like Akka or Reactor.
 
 How to use it ?
 ===============
+
+Add the repo to _build.sbt_:
+```
+resolvers +=
+  "Bintray Vert.x Streams" at "http://dl.bintray.com/codepitbull/maven"
+```
+
+Add the dependency:
+```
+"de.codepitbull.scala.vertx" %% "vertx-streams" % "3.4.2-P1"
+```
+
 Everything is centered around *io.vertx.lang.scala.streams.Stream*. You should never have to access API-classes directly.
 Inside a Verticle to the following to get all required operations:
 ```io.vertx.lang.scala.streams.Stream._```
 
-Let's take small example:
+Let's take a look at a small example:
 ```
 val input = vertx.eventBus().consumer[String]("input")
 val output = vertx.eventBus().sender[String]("output")
