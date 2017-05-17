@@ -23,8 +23,11 @@ class WriteStreamSinkTest extends AsyncFlatSpec with Matchers with Assertions {
     new ReadStreamSource[Int](vertx.eventBus().consumer[Int]("testAddress").bodyStream())
       .subscribe(testFunctionSink.sink)
 
-    new VertxListSource[Int](List(1, 2, 3, 5, 8))
-      .subscribe(new WriteStreamSink[Int](vertx.eventBus().publisher[Int]("testAddress")))
+    ec.execute(() =>
+      new VertxListSource[Int](List(1, 2, 3, 5, 8))
+        .subscribe(new WriteStreamSink[Int](vertx.eventBus().publisher[Int]("testAddress")))
+    )
+
 
     testFunctionSink.promise.future.map(s => s should equal(List(1, 2, 3, 5, 8)))
   }

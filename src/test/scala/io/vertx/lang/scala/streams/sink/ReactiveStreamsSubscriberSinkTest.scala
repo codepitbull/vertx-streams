@@ -37,8 +37,11 @@ class ReactiveStreamsSubscriberSinkTest extends AsyncFlatSpec with Matchers with
       }
     }
 
-    new VertxListSource[Int](List(1, 2, 3, 5, 8))
-      .subscribe(new ReactiveStreamsSubscriberSink[Int](rsSubscriber))
+    ec.execute(() =>
+      new VertxListSource[Int](List(1, 2, 3, 5, 8))
+        .subscribe(new ReactiveStreamsSubscriberSink[Int](rsSubscriber))
+    )
+
 
     prom.future.map(s => s should equal(List(1, 2, 3, 5, 8)))
   }

@@ -21,7 +21,9 @@ class VertxListSourceTest extends AsyncFlatSpec with Matchers with Assertions {
 
     val source = new VertxListSource[Int](List(1, 2, 3, 5, 8))
 
-    source.subscribe(testFunctionSink.sink)
+    ec.execute(() =>
+      source.subscribe(testFunctionSink.sink)
+    )
 
     testFunctionSink.promise.future.map(s => s should equal(List(1, 2, 3, 5, 8)))
   }

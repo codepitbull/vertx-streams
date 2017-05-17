@@ -36,8 +36,10 @@ class ReactiveStreamsPublisherSourceTest extends AsyncFlatSpec with Matchers wit
           prom.success(received.toList)
       })
 
-    new ReactiveStreamsPublisherSource[Int](new AsyncIterablePublisher[Int](List(1, 2, 3, 4, 5).asJava, newFixedThreadPool(5)))
-      .subscribe(new WriteStreamSink[Int](vertx.eventBus().sender[Int]("sinkAddress")))
+    ec.execute(() =>
+      new ReactiveStreamsPublisherSource[Int](new AsyncIterablePublisher[Int](List(1, 2, 3, 4, 5).asJava, newFixedThreadPool(5)))
+        .subscribe(new WriteStreamSink[Int](vertx.eventBus().sender[Int]("sinkAddress")))
+    )
 
     prom.future.map(s => s should equal(List(1, 2, 3, 4, 5)))
 

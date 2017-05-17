@@ -6,7 +6,7 @@ import io.vertx.lang.scala.streams.api.SimpleSource
 /**
   * A [[io.vertx.lang.scala.streams.api.Source]] that is based on a List.
   * @param list the list to use for event generation
-  * @param ec [[scala.concurrent.ExecutionContext]] used as a trampoline to reschedule to the event loop
+  * @param ec [[scala.concurrent.ExecutionContext]] used to reschedule to the event loop
   * @tparam O outgoing event type
   *
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a

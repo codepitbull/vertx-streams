@@ -29,8 +29,10 @@ class ProcessAsyncStageTest extends AsyncFlatSpec with Matchers with Assertions 
     val source = new VertxListSource[Int](List(1, 2, 3, 5, 8))
     val processStage = new ProcessAsyncStage((i: Int) => Future(sideEffectCounter.addAndGet(i)))
 
-    processStage.subscribe(testFunctionSink.sink)
-    source.subscribe(processStage)
+    ec.execute(() => {
+      processStage.subscribe(testFunctionSink.sink)
+      source.subscribe(processStage)
+    })
 
 
     testFunctionSink.promise.future

@@ -23,15 +23,17 @@ class ReadStreamSourceTest extends AsyncFlatSpec with Matchers with Assertions {
       .consumer[Int]("testAddress")
       .bodyStream()
 
-    new ReadStreamSource[Int](readStream)
-      .subscribe(testFunctionSink.sink)
+    ec.execute(() => {
+      new ReadStreamSource[Int](readStream)
+        .subscribe(testFunctionSink.sink)
 
-    val sender = vertx.eventBus().sender[Int]("testAddress")
-    sender.send(1)
-    sender.send(2)
-    sender.send(3)
-    sender.send(5)
-    sender.send(8)
+      val sender = vertx.eventBus().sender[Int]("testAddress")
+      sender.send(1)
+      sender.send(2)
+      sender.send(3)
+      sender.send(5)
+      sender.send(8)
+    })
 
     testFunctionSink.promise.future.map(s => s should equal(List(1, 2, 3, 5, 8)))
   }

@@ -25,8 +25,12 @@ class FilterStageTest extends AsyncFlatSpec with Matchers with Assertions {
     val source = new VertxListSource[Int](original)
     val stage = new FilterStage((i: Int) => i != 2)
 
-    stage.subscribe(testFunctionSink.sink)
-    source.subscribe(stage)
+    ec.execute(() => {
+      stage.subscribe(testFunctionSink.sink)
+        source.subscribe(stage)
+      }
+    )
+
 
     testFunctionSink.promise.future.map(s => s should equal(expected))
   }
