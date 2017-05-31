@@ -13,8 +13,10 @@ import org.reactivestreams.Publisher
   * a eventbus address.
   */
 class VertxAkkaVerticle extends ScalaVerticle{
+
+
   override def start(): Unit = {
-    val producer = vertx.eventBus().sender[Int]("sinkAddress")
+    val producer = vertx.eventBus().sender[Int](VertxAkkaVerticle.receiverAddress)
 
     akkaFlow.stream
       .sink(producer)
@@ -28,4 +30,8 @@ class VertxAkkaVerticle extends ScalaVerticle{
       .map(a => a + 1)
     source.runWith(Sink.asPublisher(false))
   }
+}
+
+object VertxAkkaVerticle {
+  val receiverAddress = "sinkAddress"
 }
