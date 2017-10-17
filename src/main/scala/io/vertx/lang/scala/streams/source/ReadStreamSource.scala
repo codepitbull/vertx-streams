@@ -8,7 +8,7 @@ import io.vertx.scala.core.streams.ReadStream
   * @param rs the [[ReadStream]] to wrap
   * @tparam O outgoing event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class ReadStreamSource[O](rs: ReadStream[O]) extends SimpleSource[O]{
 

@@ -11,7 +11,7 @@ import org.scalatest.{Assertions, AsyncFlatSpec, Matchers}
 import scala.concurrent.Future
 
 /**
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 @RunWith(classOf[JUnitRunner])
 class MapAsyncStageTest extends AsyncFlatSpec with Matchers with Assertions {

@@ -13,7 +13,7 @@ import scala.concurrent.Future
 /**
   * All sorts of helpers and extensions to allow easy creations of Streams.
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 object Stream {
 

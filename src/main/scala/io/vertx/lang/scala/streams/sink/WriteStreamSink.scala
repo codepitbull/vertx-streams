@@ -13,7 +13,7 @@ import scala.collection.mutable
   * @param _batchSize size of batches that should be processed
   * @tparam I type of incoming events
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class WriteStreamSink[I](ws: WriteStream[I], _batchSize: Long = 10) extends SimpleSink[I]{
 

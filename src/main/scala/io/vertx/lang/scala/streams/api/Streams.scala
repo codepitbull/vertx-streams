@@ -10,7 +10,7 @@ package io.vertx.lang.scala.streams.api
   * to provide this API for our internal implementation and provide adapters to connect to existing
   * Reactive Streams implementations (e.g. Akka)
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>>
   */
 
 sealed trait Component

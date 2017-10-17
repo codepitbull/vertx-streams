@@ -11,7 +11,7 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Assertions, AsyncFlatSpec, Matchers}
 
 /**
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 @RunWith(classOf[JUnitRunner])
 class ProcessStageTest extends AsyncFlatSpec with Matchers with Assertions {

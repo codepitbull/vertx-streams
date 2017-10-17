@@ -4,13 +4,13 @@ import io.vertx.lang.scala.streams.api.{Component, Sink, Source}
 
 /**
   * Represents a part of the stream.
-  * This class is not thrread safe!
+  * This class is not thread safe!
   * @param componentFactory will be used to create the actual component when the stream is started
   * @param incoming references to the sources of incoming events for this component
   * @param outputs number of outputs to connect
-  * @tparam I type of icnoming events
+  * @tparam I type of incoming events
   * @tparam O type of outgoing events
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[StreamStage[_, I]], outputs: Int = 1) {
 

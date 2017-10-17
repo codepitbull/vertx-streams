@@ -9,7 +9,7 @@ import scala.util.{Failure, Success}
 /**
   * An [[ExecutionContext]] implementation for [[WorkerExecutor]]s
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class WorkerExecutorExecutionContext(val ctx: WorkerExecutor) extends ExecutionContext {
   private val Log = ScalaLogger.getLogger(classOf[VertxExecutionContext].getName)

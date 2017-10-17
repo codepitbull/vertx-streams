@@ -20,7 +20,7 @@ import scala.collection.mutable
 import scala.concurrent.Promise
 
 /**
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 @RunWith(classOf[JUnitRunner])
 class AkkaIntegrationTest extends AsyncFlatSpec with Matchers with Assertions {

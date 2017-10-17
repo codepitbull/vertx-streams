@@ -9,7 +9,7 @@ import io.vertx.lang.scala.streams.api.SimpleSource
   * @param ec [[scala.concurrent.ExecutionContext]] used to reschedule to the event loop
   * @tparam O outgoing event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class VertxListSource[O](list: List[O])(implicit ec:VertxExecutionContext) extends SimpleSource[O]{
   private var index: Int = 0

@@ -8,7 +8,7 @@ import io.vertx.lang.scala.ScalaLogger
   *
   * @tparam I incoming event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 trait SimpleSink[I] extends Sink[I] {
 

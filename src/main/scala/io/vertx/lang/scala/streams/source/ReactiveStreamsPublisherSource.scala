@@ -12,7 +12,7 @@ import scala.concurrent.ExecutionContext
   * @param ec execution context to run all operations on
   * @tparam O outgoing event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class ReactiveStreamsPublisherSource[O](publisher: Publisher[O])(implicit ec: ExecutionContext) extends Source[O] {
   protected var subscription: TokenSubscription = _

@@ -9,7 +9,7 @@ import scala.util.{Failure, Success, Try}
   * @param f the function to execute
   * @tparam I the incoming event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class ProcessStage[I](f: I => Unit) extends SimpleStage[I,I]{
   override def next(event: I): Unit = {

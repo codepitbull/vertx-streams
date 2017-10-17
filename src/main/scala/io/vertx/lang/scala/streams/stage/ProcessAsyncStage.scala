@@ -14,7 +14,7 @@ import scala.util.{Failure, Success}
   * @param ec the [[VertxExecutionContext]] all resulting operations run on
   * @tparam I input event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class ProcessAsyncStage[I](f: I => Future[Unit])
                              (implicit ec: VertxExecutionContext) extends SimpleStage[I, I] {

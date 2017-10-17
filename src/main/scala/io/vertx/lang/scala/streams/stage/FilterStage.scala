@@ -11,7 +11,7 @@ import scala.util.{Failure, Success, Try}
   * @param f the predicate
   * @tparam I incoming event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class FilterStage[I](f: I => Boolean) extends SimpleStage[I,I]{
   override def next(event: I): Unit = {

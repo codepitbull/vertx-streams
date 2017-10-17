@@ -12,7 +12,7 @@ import org.reactivestreams.{Subscriber, Subscription}
   * @param ec the VertxExecutionContext that is used to interact with the stream
   * @tparam I incoming event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class ReactiveStreamsSubscriberSink[I](subscriber: Subscriber[I])(implicit ec: VertxExecutionContext) extends Sink[I]{
 

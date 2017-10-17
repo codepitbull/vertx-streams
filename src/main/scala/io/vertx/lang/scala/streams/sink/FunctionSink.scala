@@ -8,7 +8,7 @@ import io.vertx.lang.scala.streams.api.SimpleSink
   * @param f function to invoke for each event
   * @tparam I incoming event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class FunctionSink[I](f: I => Unit, _batchSize: Long = 1) extends SimpleSink[I]{
   override def batchSize: Long = _batchSize

@@ -15,7 +15,7 @@ import org.scalatest.{Assertions, AsyncFlatSpec, Matchers}
 import scala.concurrent.Promise
 
 /**
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 @RunWith(classOf[JUnitRunner])
 class StreamBasicsTest extends AsyncFlatSpec with Matchers with Assertions {

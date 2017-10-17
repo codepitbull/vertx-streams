@@ -14,7 +14,7 @@ import scala.collection.JavaConverters._
 import scala.concurrent.Promise
 
 /**
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 @RunWith(classOf[JUnitRunner])
 class ReactiveStreamsSubscriberSinkTest extends AsyncFlatSpec with Matchers with Assertions {

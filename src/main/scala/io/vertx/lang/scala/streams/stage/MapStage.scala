@@ -10,7 +10,7 @@ import scala.util.{Failure, Success, Try}
   * @tparam I incoming event type
   * @tparam O outgoing event type produced by the mapping function
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class MapStage[I,O](f: I => O) extends SimpleStage[I,O]{
   override def next(event: I): Unit = {

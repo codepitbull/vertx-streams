@@ -15,7 +15,7 @@ import scala.util.{Failure, Success}
   * @tparam I input event type
   * @tparam O output event type
   *
-  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a
+  * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 class MapAsyncStage[I, O](f: I => Future[O])
                          (implicit ec: VertxExecutionContext) extends SimpleStage[I, O] {
