@@ -1,6 +1,8 @@
 package io.vertx.lang.scala.streams
 
 import io.vertx.lang.scala.streams.api.{Component, Sink, Source}
+import io.vertx.lang.scala.streams.source.ReactiveStreamsSourcePublisher
+import org.reactivestreams.Publisher
 
 /**
   * Represents a part of the stream.
@@ -37,6 +39,29 @@ class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[Stre
     }
 
     component
+  }
+
+  def publisher(): Publisher[O] = {
+
+    val input = incoming.map(i => i.run().asInstanceOf[Source[I]])
+
+    if(component == null)
+      component = componentFactory(())
+
+    if(!component.isInstanceOf[Source[I]]) {
+      throw new RuntimeException("Thou shalt use A SOURCE !!!1!!1!!")
+    }
+
+    outputCount = outputCount + 1
+    if(outputCount == outputs) {
+      component match {
+        case sink: Sink[I] => input.foreach(source => source.subscribe(sink))
+        case source: Source[_] => ()
+        case _ => throw new IllegalArgumentException(s"An unknown type has been constructed: $component}")
+      }
+    }
+
+    new ReactiveStreamsSourcePublisher[O](component.asInstanceOf[Source[O]])
   }
 }
 

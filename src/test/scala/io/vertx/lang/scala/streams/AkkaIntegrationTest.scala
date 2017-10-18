@@ -5,7 +5,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 import akka.NotUsed
 import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
-import akka.stream.scaladsl.{Flow, Sink, Source}
+import akka.stream.scaladsl.Sink._
+import akka.stream.scaladsl.{Flow, Source}
 import io.vertx.lang.scala.VertxExecutionContext
 import io.vertx.lang.scala.streams.Stream._
 import io.vertx.lang.scala.streams.source.VertxListSource
@@ -48,7 +49,7 @@ class AkkaIntegrationTest extends AsyncFlatSpec with Matchers with Assertions {
       implicit val materializer = ActorMaterializer()
       val source: Source[Int, NotUsed] = Source(0 to 100)
         .map(a => a + 1)
-      val src = source.runWith(Sink.asPublisher(false))
+      val src = source.runWith(asPublisher(false))
 
       src.stream
         .sink(producer)
@@ -74,7 +75,7 @@ class AkkaIntegrationTest extends AsyncFlatSpec with Matchers with Assertions {
 
       val akkaFlow: Subscriber[Int] = Flow[Int]
         .map(a => s"Akka $a")
-        .to(Sink.foreach[String](a => {
+        .to(foreach[String](a => {
           received.add(a)
           if (received.size() == 5) {
             prom.success(received.asScala.toList)
