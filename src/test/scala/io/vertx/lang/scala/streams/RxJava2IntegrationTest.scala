@@ -45,7 +45,6 @@ class ReactiveStreamsVerticle extends ScalaVerticle {
       .map((a:String) => s"Hello $a")
       .publisher()
 
-    sender.sour
     fromPublisher(publisher)
       .map(a => a + "HAHAHHA")
       .forEach(println(_))

@@ -105,13 +105,14 @@ class NiceApiVerticle extends ScalaVerticle {
 class FutureTestVerticle extends ScalaVerticle {
   override def startFuture() = {
     val consumer = vertx.eventBus().consumer[String]("sourceAddress")
-    //val producer = vertx.eventBus().sender[String]("sinkAddress")
+    val producer = vertx.eventBus().sender[String]("sinkAddress")
 
     consumer.bodyStream()
       .stream
       .mapAsync((a:String) => vertx.eventBus().sendFuture[String]("stageAddress", a))
       .mapAsync((a:Message[String]) => vertx.executeBlocking(() => a))
       .map(a => a.body())
+      .sink(producer)
       .run()
 
     consumer.completionFuture()
