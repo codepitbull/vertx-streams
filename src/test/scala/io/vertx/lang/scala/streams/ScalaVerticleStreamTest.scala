@@ -112,7 +112,6 @@ class FutureTestVerticle extends ScalaVerticle {
       .mapAsync((a:String) => vertx.eventBus().sendFuture[String]("stageAddress", a))
       .mapAsync((a:Message[String]) => vertx.executeBlocking(() => a))
       .map(a => a.body())
-      .sink(producer)
       .run()
 
     consumer.completionFuture()
