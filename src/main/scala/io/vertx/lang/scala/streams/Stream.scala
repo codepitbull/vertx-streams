@@ -2,7 +2,7 @@ package io.vertx.lang.scala.streams
 
 import io.vertx.lang.scala.VertxExecutionContext
 import io.vertx.lang.scala.streams.api.{Sink, Source}
-import io.vertx.lang.scala.streams.sink.{FunctionSink, ReactiveStreamsSubscriberSink, WriteStreamSink}
+import io.vertx.lang.scala.streams.sink.{FunctionSink, ReactiveStreamsSubscriberSink, ReactiveStreamsWriteStreamSink, WriteStreamSink}
 import io.vertx.lang.scala.streams.source.{ReactiveStreamsPublisherSource, ReadStreamSource}
 import io.vertx.lang.scala.streams.stage._
 import io.vertx.scala.core.streams.{ReadStream, WriteStream}
@@ -34,6 +34,17 @@ object Stream {
   implicit class ReadStreamSourceExtender[O](val rs: ReadStream[O]) {
     def stream: StreamStage[Unit, O] = StreamStage[Unit, O](_ => new ReadStreamSource[O](rs))
   }
+
+
+  /**
+    * Extends [[WriteStream]]s with a subscriber-method to provide an entry point for reactive streams.
+    * @param ws the WriteStream to extends
+    * @tparam I type of elements consumed by the WriteStream
+    */
+  implicit class WriteStreamSubscriberExtender[I](val ws: WriteStream[I])(implicit ec:VertxExecutionContext) {
+    def subscriber(batchSize: Long = 10): Subscriber[I] = new ReactiveStreamsWriteStreamSink[I](ws, batchSize)
+  }
+
 
   /**
     * Extends [[Publisher]]s with a stream-method to provide a convenient entry-point for streams.
