@@ -30,14 +30,22 @@ class ReactiveStreamsWriteStreamSink[I](ws: WriteStream[I], _batchSize: Long)(im
   })
 
   override def onComplete() = {
+    ec.execute(() => ws.end())
+  }
+
+  override def onNext(t: I) = {
     if(tokenCounter.decrementAndGet() < 0) {
       Log.error("Received a new item but there are no tokens left.")
       throw new RuntimeException("Received a new item but there are no tokens left.")
     }
-    ec.execute(() => ws.end())
+    ec.execute(() => {
+      if(tokenCounter.get() == 0) {
+        tokenCounter.addAndGet(_batchSize)
+        subscription.get().request(_batchSize)
+      }
+      ws.write(t)
+    })
   }
-
-  override def onNext(t: I) = ec.execute(() => ws.write(t))
 
   override def onSubscribe(s: Subscription) = {
     if(!subscription.compareAndSet(null, s)) {

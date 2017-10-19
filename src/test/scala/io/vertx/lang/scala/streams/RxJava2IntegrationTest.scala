@@ -1,5 +1,7 @@
 package io.vertx.lang.scala.streams
 
+import java.util.concurrent.atomic.AtomicInteger
+
 import io.vertx.lang.scala.ScalaVerticle.nameForVerticle
 import io.vertx.lang.scala.streams.Stream._
 import io.vertx.lang.scala.{ScalaVerticle, VertxExecutionContext}
@@ -20,16 +22,25 @@ class RxJava2IntegrationTest extends AsyncFlatSpec with Matchers with Assertions
     val vertx = Vertx.vertx
     implicit val exec = VertxExecutionContext(vertx.getOrCreateContext())
 
-    val result = Promise[String]
+    val result = Promise[Int]
+    val counter = new AtomicInteger(0)
+
+    val iterations = 30
     vertx.eventBus()
       .localConsumer[String]("targetAddress")
-      .handler(m => result.success(m.body()))
+      .handler(m =>
+        if("Hello World from RxJava2 !!!".equals(m.body())){
+          if(iterations == counter.incrementAndGet()) {
+            result.success(counter.get())
+          }
+        }
+      )
 
     vertx
       .deployVerticleFuture(nameForVerticle[ReactiveStreamsVerticle])
-      .map(s => vertx.eventBus().send("sourceAddress", "World"))
+      .map(s => (1 to iterations).foreach(i => vertx.eventBus().send("sourceAddress", "World")))
 
-    result.future.map(r => r should equal("Hello World from RxJava2 !!!"))
+    result.future.map(r => r should equal(iterations))
   }
 }
 
