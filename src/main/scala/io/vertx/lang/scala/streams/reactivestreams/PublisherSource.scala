@@ -1,4 +1,4 @@
-package io.vertx.lang.scala.streams.source
+package io.vertx.lang.scala.streams.reactivestreams
 
 import io.vertx.lang.scala.streams.api.{Sink, Source, TokenSubscription}
 import org.reactivestreams.{Publisher, Subscriber, Subscription}
@@ -14,7 +14,7 @@ import scala.concurrent.ExecutionContext
   *
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
-class ReactiveStreamsPublisherSource[O](publisher: Publisher[O])(implicit ec: ExecutionContext) extends Source[O] {
+class PublisherSource[O](publisher: Publisher[O])(implicit ec: ExecutionContext) extends Source[O] {
   protected var subscription: TokenSubscription = _
   protected var subscriber: Sink[O] = _
 

@@ -3,7 +3,7 @@ package io.vertx.lang.scala.streams
 import io.reactivex.Flowable
 import io.reactivex.Flowable.fromPublisher
 import io.vertx.lang.scala.streams.api.{Component, Sink, Source}
-import io.vertx.lang.scala.streams.source.ReactiveStreamsSourcePublisher
+import io.vertx.lang.scala.streams.reactivestreams.SourcePublisher
 import org.reactivestreams.Publisher
 
 /**
@@ -63,7 +63,7 @@ class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[Stre
       }
     }
 
-    new ReactiveStreamsSourcePublisher[O](component.asInstanceOf[Source[O]])
+    new SourcePublisher[O](component.asInstanceOf[Source[O]])
   }
 
   def rxjava2(): Flowable[O] = {

@@ -3,6 +3,7 @@ package io.vertx.lang.scala.streams.source
 import java.util.concurrent.Executors.newFixedThreadPool
 
 import io.vertx.lang.scala.VertxExecutionContext
+import io.vertx.lang.scala.streams.reactivestreams.PublisherSource
 import io.vertx.lang.scala.streams.sink.WriteStreamSink
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith
@@ -18,7 +19,7 @@ import scala.concurrent.Promise
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 @RunWith(classOf[JUnitRunner])
-class ReactiveStreamsPublisherSourceTest extends AsyncFlatSpec with Matchers with Assertions {
+class PublisherSourceTest extends AsyncFlatSpec with Matchers with Assertions {
   "A ReactiveStreams based Publisher" should "work as a Source in a stream" in {
     val vertx = Vertx.vertx()
     val ctx = vertx.getOrCreateContext()
@@ -37,7 +38,7 @@ class ReactiveStreamsPublisherSourceTest extends AsyncFlatSpec with Matchers wit
       })
 
     ec.execute(() =>
-      new ReactiveStreamsPublisherSource[Int](new AsyncIterablePublisher[Int](List(1, 2, 3, 4, 5).asJava, newFixedThreadPool(5)))
+      new PublisherSource[Int](new AsyncIterablePublisher[Int](List(1, 2, 3, 4, 5).asJava, newFixedThreadPool(5)))
         .subscribe(new WriteStreamSink[Int](vertx.eventBus().sender[Int]("sinkAddress")))
     )
 

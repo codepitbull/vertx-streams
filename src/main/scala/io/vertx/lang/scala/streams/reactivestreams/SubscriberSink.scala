@@ -1,4 +1,4 @@
-package io.vertx.lang.scala.streams.sink
+package io.vertx.lang.scala.streams.reactivestreams
 
 import java.util.concurrent.atomic.AtomicReference
 
@@ -14,7 +14,7 @@ import org.reactivestreams.{Subscriber, Subscription}
   *
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
-class ReactiveStreamsSubscriberSink[I](subscriber: Subscriber[I])(implicit ec: VertxExecutionContext) extends Sink[I]{
+class SubscriberSink[I](subscriber: Subscriber[I])(implicit ec: VertxExecutionContext) extends Sink[I]{
 
   private val Log = ScalaLogger.getLogger(getClass.getName)
 

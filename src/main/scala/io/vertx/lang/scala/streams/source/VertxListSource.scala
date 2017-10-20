@@ -16,15 +16,16 @@ class VertxListSource[O](list: List[O])(implicit ec:VertxExecutionContext) exten
   override def start(): Unit = {
     if(remainingTokens > 0) {
       if(index == list.size) {
-        remainingTokens = 0
         subscriber.onComplete()
+        subscription.cancel()
       }
       else {
+        remainingTokens = remainingTokens - 1
         subscriber.onNext(list(index))
         index += 1
-        remainingTokens -= 1
-        if(remainingTokens > 0)
+        if(remainingTokens > 0) {
           ec.execute(() => start())
+        }
       }
     }
   }

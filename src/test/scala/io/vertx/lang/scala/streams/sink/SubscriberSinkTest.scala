@@ -3,6 +3,7 @@ package io.vertx.lang.scala.streams.sink
 import java.util.concurrent.{CopyOnWriteArrayList, Executors}
 
 import io.vertx.lang.scala.VertxExecutionContext
+import io.vertx.lang.scala.streams.reactivestreams.SubscriberSink
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith
@@ -17,7 +18,7 @@ import scala.concurrent.Promise
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 @RunWith(classOf[JUnitRunner])
-class ReactiveStreamsSubscriberSinkTest extends AsyncFlatSpec with Matchers with Assertions {
+class SubscriberSinkTest extends AsyncFlatSpec with Matchers with Assertions {
   "A ReactiveStreams based Subscriber" should "work as a Sink in a stream" in {
     val vertx = Vertx.vertx()
     val ctx = vertx.getOrCreateContext()
@@ -39,7 +40,7 @@ class ReactiveStreamsSubscriberSinkTest extends AsyncFlatSpec with Matchers with
 
     ec.execute(() =>
       new VertxListSource[Int](List(1, 2, 3, 5, 8))
-        .subscribe(new ReactiveStreamsSubscriberSink[Int](rsSubscriber))
+        .subscribe(new SubscriberSink[Int](rsSubscriber))
     )
 
 

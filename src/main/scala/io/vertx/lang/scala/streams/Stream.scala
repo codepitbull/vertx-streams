@@ -2,8 +2,9 @@ package io.vertx.lang.scala.streams
 
 import io.vertx.lang.scala.VertxExecutionContext
 import io.vertx.lang.scala.streams.api.{Sink, Source}
-import io.vertx.lang.scala.streams.sink.{FunctionSink, ReactiveStreamsSubscriberSink, ReactiveStreamsWriteStreamSink, WriteStreamSink}
-import io.vertx.lang.scala.streams.source.{ReactiveStreamsPublisherSource, ReadStreamSource}
+import io.vertx.lang.scala.streams.reactivestreams.{PublisherSource, SubscriberSink, WriteStreamSubscriber}
+import io.vertx.lang.scala.streams.sink.{FunctionSink, WriteStreamSink}
+import io.vertx.lang.scala.streams.source.ReadStreamSource
 import io.vertx.lang.scala.streams.stage._
 import io.vertx.scala.core.streams.{ReadStream, WriteStream}
 import org.reactivestreams.{Publisher, Subscriber}
@@ -42,7 +43,7 @@ object Stream {
     * @tparam I type of elements consumed by the WriteStream
     */
   implicit class WriteStreamSubscriberExtender[I](val ws: WriteStream[I])(implicit ec:VertxExecutionContext) {
-    def subscriber(batchSize: Long = 10): Subscriber[I] = new ReactiveStreamsWriteStreamSink[I](ws, batchSize)
+    def subscriber(batchSize: Long = 10): Subscriber[I] = new WriteStreamSubscriber[I](ws, batchSize)
   }
 
 
@@ -53,7 +54,7 @@ object Stream {
     * @tparam O the output type of the [[Publisher]]
     */
   implicit class PublisherExtender[O](val pub: Publisher[O])(implicit ec:VertxExecutionContext) {
-    def stream: StreamStage[Unit, O] = StreamStage[Unit, O](_ => new ReactiveStreamsPublisherSource[O](pub))
+    def stream: StreamStage[Unit, O] = StreamStage[Unit, O](_ => new PublisherSource[O](pub))
   }
 
   /**
@@ -135,7 +136,7 @@ object Stream {
       * @param sink a [[Sink]] to receive all events from the stream
       */
     def sink(sink: Subscriber[I])(implicit ec:VertxExecutionContext): StreamStage[I,Unit] =
-      StreamStage[I, Unit](_ => new ReactiveStreamsSubscriberSink[I](sink), streamBuilder :: Nil)
+      StreamStage[I, Unit](_ => new SubscriberSink[I](sink), streamBuilder :: Nil)
   }
 
 }

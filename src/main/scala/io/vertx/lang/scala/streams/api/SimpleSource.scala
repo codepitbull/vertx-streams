@@ -16,13 +16,28 @@ trait SimpleSource[O] extends Source[O]{
       throw new IllegalArgumentException("This Source only supports one TokenSubscription at a time")
     subscriber = s
     subscription = new TokenSubscription {
-      override def cancel(): Unit = remainingTokens = 0
+      private var cancelled = false
+
+      override def cancel(): Unit = {
+        remainingTokens = 0
+        subscriber = null
+        subscription = null
+        cancelled = true
+      }
 
       override def request(n: Long): Unit = {
-        val oldValue = remainingTokens
-        remainingTokens += n
-        if(oldValue == 0)
-          start()
+        if(!cancelled) {
+          if(n <= 0) {
+            subscriber.onError(new IllegalArgumentException(s"Requested $n-tokens "))
+          }
+          else {
+            val oldValue = remainingTokens
+            remainingTokens += n
+            if(oldValue == 0) {
+              start()
+            }
+          }
+        }
       }
     }
     subscriber.onSubscribe(subscription)
