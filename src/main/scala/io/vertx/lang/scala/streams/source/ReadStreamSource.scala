@@ -23,7 +23,7 @@ class ReadStreamSource[O](rs: ReadStream[O]) extends SimpleSource[O]{
     }
   })
 
-  override def start(): Unit = {
+  override def tokensReceived(): Unit = {
     if(paused) {
       rs.resume()
       paused = false

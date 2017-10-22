@@ -13,21 +13,36 @@ import io.vertx.lang.scala.streams.api.SimpleSource
   */
 class VertxListSource[O](list: List[O])(implicit ec:VertxExecutionContext) extends SimpleSource[O]{
   private var index: Int = 0
-  override def start(): Unit = {
-    if(remainingTokens > 0) {
-      if(index == list.size) {
-        subscriber.onComplete()
-        subscription.cancel()
-      }
-      else {
-        remainingTokens = remainingTokens - 1
-        subscriber.onNext(list(index))
-        index += 1
-        if(remainingTokens > 0) {
-          ec.execute(() => start())
-        }
-      }
+  private var paused = true
+  override def tokensReceived(): Unit = {
+    if(paused) {
+      paused = false
+      next()
     }
   }
 
+  def next(): Unit = {
+    if(index == list.size) {
+      subscriber.onComplete()
+    }
+    else {
+      ec.execute(() => {
+        if(subscriber == null) {
+          paused = true
+        }
+        else {
+          remainingTokens = remainingTokens - 1
+          subscriber.onNext(list(index))
+          index += 1
+          if(remainingTokens > 0) {
+            next()
+          }
+          else {
+            paused = true
+          }
+        }
+      })
+    }
+
+  }
 }

@@ -13,7 +13,7 @@
   <properties>
     <asciidoc.dir>${project.basedir}/src/main/asciidoc</asciidoc.dir>
     <scala.version>2.12.2</scala.version>
-    <vertx.version>3.4.2-SNAPSHOT</vertx.version>
+    <vertx.version>3.5.0</vertx.version>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>

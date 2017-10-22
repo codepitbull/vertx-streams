@@ -9,7 +9,7 @@ import scala.collection.mutable
   * This [[io.vertx.lang.scala.streams.api.Sink]]-implementation takes a [[WriteStream]] for processing incoming events.
   * The Vert.x-API produces these in many places (including the Event Bus).
   *
-  * @param ws the Stream to start from
+  * @param ws the Stream to tokensReceived from
   * @param _batchSize size of batches that should be processed
   * @tparam I type of incoming events
   *

@@ -31,22 +31,17 @@ trait SimpleSource[O] extends Source[O]{
             subscriber.onError(new IllegalArgumentException(s"Requested $n-tokens "))
           }
           else {
-            val oldValue = remainingTokens
             remainingTokens += n
-            if(oldValue == 0) {
-              start()
-            }
+            tokensReceived()
           }
         }
       }
     }
     subscriber.onSubscribe(subscription)
-    start()
   }
 
   /**
-    * Will be called right after starting the streams and then each time we ran out of receiveTokens
-    * and received new ones.
+    * Will be called each time we receive new tokens.
     */
-  def start(): Unit
+  def tokensReceived(): Unit
 }
