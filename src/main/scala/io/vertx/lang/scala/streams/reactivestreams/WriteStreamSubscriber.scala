@@ -24,16 +24,24 @@ class WriteStreamSubscriber[I](ws: WriteStream[I], _batchSize: Long)(implicit ec
 
   var subscription = new AtomicReference[Subscription]
 
-  override def onError(t: Throwable) = ec.execute(() => {
-    Log.error("Terminating stream due to an error", t)
-    ws.end()
-  })
+  override def onError(t: Throwable) = {
+    if(t == null) {
+      throw new NullPointerException("onError called with null as parameter")
+    }
+    ec.execute(() => {
+      Log.error("Terminating stream due to an error", t)
+      ws.end()
+    })
+  }
 
   override def onComplete() = {
     ec.execute(() => ws.end())
   }
 
   override def onNext(t: I) = {
+    if(t == null) {
+      throw new NullPointerException("onNext was called with null as param")
+    }
     if(tokenCounter.decrementAndGet() < 0) {
       Log.error("Received a new item but there are no tokens left.")
       throw new RuntimeException("Received a new item but there are no tokens left.")
@@ -50,10 +58,12 @@ class WriteStreamSubscriber[I](ws: WriteStream[I], _batchSize: Long)(implicit ec
   override def onSubscribe(s: Subscription) = {
     if(!subscription.compareAndSet(null, s)) {
       Log.error("Subscriber can only be subscribed once.")
-      throw new RuntimeException("Subscriber can only be subscribed once.")
+      s.cancel()
     }
-    tokenCounter.addAndGet(_batchSize)
-    s.request(_batchSize)
+    else {
+      tokenCounter.addAndGet(_batchSize)
+      s.request(_batchSize)
+    }
   }
 
 }

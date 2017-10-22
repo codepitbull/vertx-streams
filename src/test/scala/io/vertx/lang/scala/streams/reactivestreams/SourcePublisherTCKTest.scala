@@ -8,7 +8,7 @@ import org.reactivestreams.Publisher
 import org.reactivestreams.tck.{PublisherVerification, TestEnvironment}
 import org.scalatest.{Assertions, Matchers}
 
-class PublisherVerificationTest(testEnvironment: TestEnvironment, gcTimeOut: Long) extends PublisherVerification[String](testEnvironment, gcTimeOut) with Matchers with Assertions  {
+class SourcePublisherTCKTest(testEnvironment: TestEnvironment, gcTimeOut: Long) extends PublisherVerification[String](testEnvironment, gcTimeOut) with Matchers with Assertions  {
 
   def this() = this(new TestEnvironment(300l), 1000L)
 
