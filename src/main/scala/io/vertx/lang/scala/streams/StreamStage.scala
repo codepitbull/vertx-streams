@@ -2,6 +2,7 @@ package io.vertx.lang.scala.streams
 
 import io.reactivex.Flowable
 import io.reactivex.Flowable.fromPublisher
+import io.vertx.lang.scala.VertxExecutionContext
 import io.vertx.lang.scala.streams.api.{Component, Sink, Source}
 import io.vertx.lang.scala.streams.reactivestreams.SourcePublisher
 import org.reactivestreams.Publisher
@@ -43,7 +44,7 @@ class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[Stre
     component
   }
 
-  def publisher(): Publisher[O] = {
+  def publisher()(implicit ec: VertxExecutionContext): Publisher[O] = {
 
     val input = incoming.map(i => i.run().asInstanceOf[Source[I]])
 
@@ -66,7 +67,7 @@ class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[Stre
     new SourcePublisher[O](component.asInstanceOf[Source[O]])
   }
 
-  def rxjava2(): Flowable[O] = {
+  def rxjava2()(implicit ec: VertxExecutionContext): Flowable[O] = {
     fromPublisher(publisher())
   }
 }
