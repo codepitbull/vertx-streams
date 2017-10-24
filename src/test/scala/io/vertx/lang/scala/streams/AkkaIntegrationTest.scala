@@ -8,7 +8,8 @@ import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.Sink._
 import akka.stream.scaladsl.{Flow, Source}
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.Stream._
+import io.vertx.lang.scala.streams._
+import io.vertx.lang.scala.reactivestreams._
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith

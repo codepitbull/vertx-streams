@@ -1,4 +1,4 @@
-package io.vertx.lang.scala.streams.reactivestreams
+package io.vertx.lang.scala.reactivestreams
 
 import io.vertx.lang.scala.streams.api.{Sink, Source, TokenSubscription}
 import org.reactivestreams.{Publisher, Subscriber, Subscription}

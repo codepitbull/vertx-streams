@@ -3,7 +3,7 @@ package io.vertx.lang.scala.streams.sink
 import java.util.concurrent.{CopyOnWriteArrayList, Executors}
 
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.reactivestreams.SubscriberSink
+import io.vertx.lang.scala.reactivestreams.SubscriberSink
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith

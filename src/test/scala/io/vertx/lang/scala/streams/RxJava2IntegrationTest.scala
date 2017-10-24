@@ -3,7 +3,8 @@ package io.vertx.lang.scala.streams
 import java.util.concurrent.atomic.AtomicInteger
 
 import io.vertx.lang.scala.ScalaVerticle.nameForVerticle
-import io.vertx.lang.scala.streams.Stream._
+import io.vertx.lang.scala.streams._
+import io.vertx.lang.scala.reactivestreams._
 import io.vertx.lang.scala.{ScalaVerticle, VertxExecutionContext}
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith

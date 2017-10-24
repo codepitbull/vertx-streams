@@ -5,7 +5,8 @@ import akka.actor.ActorSystem
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Sink, Source}
 import io.vertx.lang.scala.ScalaVerticle
-import io.vertx.lang.scala.streams.Stream._
+import io.vertx.lang.scala.streams._
+import io.vertx.lang.scala.reactivestreams._
 import org.reactivestreams.Publisher
 
 /**

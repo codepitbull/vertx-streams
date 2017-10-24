@@ -1,10 +1,9 @@
-package io.vertx.lang.scala.streams
+package io.vertx.lang.scala.streams.api
 
 import io.reactivex.Flowable
 import io.reactivex.Flowable.fromPublisher
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.api.{Component, Sink, Source}
-import io.vertx.lang.scala.streams.reactivestreams.SourcePublisher
+import io.vertx.lang.scala.reactivestreams.SourcePublisher
 import org.reactivestreams.Publisher
 
 /**

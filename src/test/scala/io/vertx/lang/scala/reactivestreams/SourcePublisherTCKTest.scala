@@ -1,7 +1,7 @@
-package io.vertx.lang.scala.streams.reactivestreams
+package io.vertx.lang.scala.reactivestreams
 
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.Stream._
+import io.vertx.lang.scala.streams._
 import io.vertx.lang.scala.streams.source.VertxListSource
 import io.vertx.scala.core.Vertx
 import org.reactivestreams.Publisher

@@ -1,4 +1,4 @@
-package io.vertx.lang.scala.streams.reactivestreams
+package io.vertx.lang.scala.reactivestreams
 
 import java.util.concurrent.atomic.AtomicReference
 

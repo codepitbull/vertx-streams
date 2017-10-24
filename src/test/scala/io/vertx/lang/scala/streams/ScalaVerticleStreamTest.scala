@@ -4,7 +4,7 @@ import io.vertx.lang.scala.ScalaVerticle.nameForVerticle
 import io.vertx.lang.scala.streams.sink.WriteStreamSink
 import io.vertx.lang.scala.streams.source.ReadStreamSource
 import io.vertx.lang.scala.streams.stage.MapStage
-import io.vertx.lang.scala.streams.Stream._
+import io.vertx.lang.scala.streams._
 import io.vertx.lang.scala.{ScalaVerticle, VertxExecutionContext}
 import io.vertx.scala.core.Vertx
 import io.vertx.scala.core.eventbus.Message

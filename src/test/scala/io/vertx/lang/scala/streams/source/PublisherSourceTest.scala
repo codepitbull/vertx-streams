@@ -3,7 +3,7 @@ package io.vertx.lang.scala.streams.source
 import java.util.concurrent.Executors.newFixedThreadPool
 
 import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.reactivestreams.PublisherSource
+import io.vertx.lang.scala.reactivestreams.PublisherSource
 import io.vertx.lang.scala.streams.sink.WriteStreamSink
 import io.vertx.scala.core.Vertx
 import org.junit.runner.RunWith

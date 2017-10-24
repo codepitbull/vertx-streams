@@ -1,14 +1,12 @@
-package io.vertx.lang.scala.streams
+package io.vertx.lang.scala
 
-import io.reactivex.Flowable.fromPublisher
-import io.vertx.lang.scala.VertxExecutionContext
-import io.vertx.lang.scala.streams.api.{Sink, Source}
-import io.vertx.lang.scala.streams.reactivestreams.{FuturePublisher, PublisherSource, SubscriberSink, WriteStreamSubscriber}
+import io.vertx.lang.scala.reactivestreams.SubscriberSink
+import io.vertx.lang.scala.streams.api.{Sink, Source, StreamStage}
 import io.vertx.lang.scala.streams.sink.{FunctionSink, WriteStreamSink}
 import io.vertx.lang.scala.streams.source.{FutureSource, ReadStreamSource}
 import io.vertx.lang.scala.streams.stage._
 import io.vertx.scala.core.streams.{ReadStream, WriteStream}
-import org.reactivestreams.{Publisher, Subscriber}
+import org.reactivestreams.Subscriber
 
 import scala.concurrent.Future
 
@@ -17,12 +15,7 @@ import scala.concurrent.Future
   *
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
-object Stream {
-
-  implicit class ReactiveFuture[O](val future: Future[O])(implicit ec: VertxExecutionContext) {
-    def flowable() = fromPublisher(new FuturePublisher(future))
-  }
-
+package object streams {
   /**
     * Extends [[Future]]s with a stream-method to provide a convenient entry-point for streams.
     * @param future the Future to extends
@@ -48,27 +41,6 @@ object Stream {
     */
   implicit class ReadStreamSourceExtender[O](val rs: ReadStream[O]) {
     def stream: StreamStage[Unit, O] = StreamStage[Unit, O](_ => new ReadStreamSource[O](rs))
-  }
-
-
-  /**
-    * Extends [[WriteStream]]s with a subscriber-method to provide an entry point for reactive streams.
-    * @param ws the WriteStream to extends
-    * @tparam I type of elements consumed by the WriteStream
-    */
-  implicit class WriteStreamSubscriberExtender[I](val ws: WriteStream[I])(implicit ec:VertxExecutionContext) {
-    def subscriber(batchSize: Long = 10): Subscriber[I] = new WriteStreamSubscriber[I](ws, batchSize)
-  }
-
-
-  /**
-    * Extends [[Publisher]]s with a stream-method to provide a convenient entry-point for streams.
-    * @param pub the [[Publisher]] to extend
-    * @param ec the [[VertxExecutionContext]] all operations run on
-    * @tparam O the output type of the [[Publisher]]
-    */
-  implicit class PublisherExtender[O](val pub: Publisher[O])(implicit ec:VertxExecutionContext) {
-    def stream: StreamStage[Unit, O] = StreamStage[Unit, O](_ => new PublisherSource[O](pub))
   }
 
   /**

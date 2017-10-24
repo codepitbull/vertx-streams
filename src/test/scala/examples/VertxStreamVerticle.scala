@@ -2,7 +2,7 @@ package examples
 
 import io.vertx.lang.scala.ScalaVerticle
 import io.vertx.lang.scala.ScalaVerticle.nameForVerticle
-import io.vertx.lang.scala.streams.Stream._
+import io.vertx.lang.scala.streams._
 import io.vertx.scala.core.Vertx
 
 /**
