@@ -70,6 +70,7 @@ class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[Stre
   def rxjava2()(implicit ec: VertxExecutionContext): Flowable[O] = {
     fromPublisher(publisher())
   }
+
 }
 
 object StreamStage{
