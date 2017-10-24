@@ -67,7 +67,7 @@ class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[Stre
     new SourcePublisher[O](component.asInstanceOf[Source[O]])
   }
 
-  def rxjava2()(implicit ec: VertxExecutionContext): Flowable[O] = {
+  def flowable()(implicit ec: VertxExecutionContext): Flowable[O] = {
     fromPublisher(publisher())
   }
 

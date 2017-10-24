@@ -1,10 +1,11 @@
 package io.vertx.lang.scala.streams
 
+import io.reactivex.Flowable.fromPublisher
 import io.vertx.lang.scala.VertxExecutionContext
 import io.vertx.lang.scala.streams.api.{Sink, Source}
-import io.vertx.lang.scala.streams.reactivestreams.{PublisherSource, SubscriberSink, WriteStreamSubscriber}
+import io.vertx.lang.scala.streams.reactivestreams.{FuturePublisher, PublisherSource, SubscriberSink, WriteStreamSubscriber}
 import io.vertx.lang.scala.streams.sink.{FunctionSink, WriteStreamSink}
-import io.vertx.lang.scala.streams.source.ReadStreamSource
+import io.vertx.lang.scala.streams.source.{FutureSource, ReadStreamSource}
 import io.vertx.lang.scala.streams.stage._
 import io.vertx.scala.core.streams.{ReadStream, WriteStream}
 import org.reactivestreams.{Publisher, Subscriber}
@@ -17,6 +18,19 @@ import scala.concurrent.Future
   * @author <a href="mailto:jochen.mader@codecentric.de">Jochen Mader</a>
   */
 object Stream {
+
+  implicit class ReactiveFuture[O](val future: Future[O])(implicit ec: VertxExecutionContext) {
+    def flowable() = fromPublisher(new FuturePublisher(future))
+  }
+
+  /**
+    * Extends [[Future]]s with a stream-method to provide a convenient entry-point for streams.
+    * @param future the Future to extends
+    * @tparam O type of elements produced by the stream
+    */
+  implicit class FutureSourceExtender[O](val future: Future[O])(implicit ec: VertxExecutionContext) {
+    def stream: StreamStage[Unit, O] = StreamStage[Unit, O](_ => new FutureSource[O](future))
+  }
 
   /**
     * Extends [[Source]]s with a stream-method to provide a convenient entry-point for streams.

@@ -53,7 +53,7 @@ class ReactiveStreamsVerticle extends ScalaVerticle {
     consumer.bodyStream()
       .stream
       .map((a:String) => s"Hello $a")
-      .rxjava2()
+      .flowable()
       .map[String](a => s"$a from RxJava2 !!!")
       .subscribe(sender.subscriber())
 
