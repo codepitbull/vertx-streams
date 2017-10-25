@@ -43,29 +43,27 @@ class StreamStage[I, O](componentFactory: Unit => Component, incoming: List[Stre
     component
   }
 
+  /**
+    * Convert the stream into a reactive streams [[Publisher]]
+    * @param ec Vert.x execution context to be used for the Publisher
+    * @return the Publisher, usable with reactive streams
+    */
   def publisher()(implicit ec: VertxExecutionContext): Publisher[O] = {
 
-    val input = incoming.map(i => i.run().asInstanceOf[Source[I]])
+    val src = run()
 
-    if(component == null)
-      component = componentFactory(())
-
-    if(!component.isInstanceOf[Source[I]]) {
+    if(!src.isInstanceOf[Source[O]]) {
       throw new RuntimeException("Thou shalt use A SOURCE !!!1!!1!!")
     }
 
-    outputCount = outputCount + 1
-    if(outputCount == outputs) {
-      component match {
-        case sink: Sink[I] => input.foreach(source => source.subscribe(sink))
-        case source: Source[_] => ()
-        case _ => throw new IllegalArgumentException(s"An unknown type has been constructed: $component}")
-      }
-    }
-
-    new SourcePublisher[O](component.asInstanceOf[Source[O]])
+    new SourcePublisher[O](src.asInstanceOf[Source[O]])
   }
 
+  /**
+    * Convert the stream into a RxJava2 [[Flowable]]
+    * @param ec Vert.x execution context to be used for the Publisher
+    * @return the Flowable, usable wth RxJava2
+    */
   def flowable()(implicit ec: VertxExecutionContext): Flowable[O] = {
     fromPublisher(publisher())
   }
