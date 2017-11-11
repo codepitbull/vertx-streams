@@ -6,7 +6,7 @@
 
   <groupId>de.codepitbull.scala.vertx</groupId>
   <artifactId>vertx-streams_2.12</artifactId>
-  <version>3.4.2-P1</version>
+  <version>3.5.0.PRE1</version>
 
   <name>Vert.x Scala Language Support</name>
 
